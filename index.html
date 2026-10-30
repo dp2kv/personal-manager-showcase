@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal Manager &mdash; income &amp; expense manager built on .NET</title>
+<meta name="description" content="A self-hosted income and expense manager with an offline-capable mobile app, a credential vault and a personal organizer - one .NET solution shared by a Blazor web app, a MAUI Blazor Hybrid device app and an ASP.NET Core API.">
+<meta name="author" content="dp2kv">
+<link rel="icon" href="assets/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Personal Manager">
+<meta property="og:description" content="One .NET solution: Blazor web app, MAUI Blazor Hybrid device app and an ASP.NET Core API sharing the same domain, the same Razor UI and the same schema.">
+<meta property="og:image" content="assets/icon-192.png">
+<style>
+  :root {
+    --brand: #512BD4;
+    --accent: #0F766E;
+    --ink: #1a1c1e;
+    --muted: #5a6066;
+    --line: #dfe3e8;
+    --bg: #ffffff;
+    --panel: #f5f7f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --brand: #a78bfa;
+      --accent: #5eead4;
+      --ink: #e6e9ec;
+      --muted: #a8b0b8;
+      --line: #333a41;
+      --bg: #16191c;
+      --panel: #1f2328;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 20px 80px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  main { max-width: 860px; margin: 0 auto; }
+  header {
+    border-bottom: 3px solid var(--brand);
+    margin: 0 0 32px;
+    padding: 48px 0 24px;
+  }
+  .masthead {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .masthead img {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    flex: none;
+  }
+  h1 { font-size: 2.1em; line-height: 1.15; margin: 0 0 6px; }
+  .tagline { color: var(--muted); font-size: 1.02em; margin: 0; }
+  h2 {
+    font-size: 1.25em;
+    margin: 46px 0 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  h3 { font-size: 1.04em; margin: 26px 0 8px; }
+  .lede {
+    background: var(--panel);
+    border-left: 4px solid var(--brand);
+    padding: 16px 20px;
+    border-radius: 0 6px 6px 0;
+    margin: 24px 0 8px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .chips li {
+    margin: 0;
+    font-size: .8em;
+    font-weight: 600;
+    letter-spacing: .02em;
+    padding: 4px 11px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--muted);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: .94em;
+  }
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+  }
+  th { background: var(--panel); font-weight: 600; }
+  code {
+    background: var(--panel);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: .88em;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  figure {
+    margin: 24px 0;
+    padding: 18px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  figure img { width: 100%; height: auto; display: block; }
+  figcaption {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: .88em;
+    text-align: center;
+  }
+  blockquote {
+    margin: 18px 0;
+    padding: 12px 18px;
+    border-left: 4px solid var(--brand);
+    background: var(--panel);
+    color: var(--muted);
+    border-radius: 0 6px 6px 0;
+  }
+  .note { border-left-color: #c77700; }
+  a { color: var(--brand); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .card {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px 16px;
+    background: var(--panel);
+  }
+  .card h3 { margin: 0 0 6px; font-size: .98em; }
+  .card p { margin: 0; font-size: .9em; color: var(--muted); }
+  footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .9em;
+  }
+  ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="masthead">
+    <img src="assets/icon-192.png" alt="Personal Manager app icon">
+    <div>
+      <h1>Personal Manager</h1>
+      <p class="tagline">A self-hosted income &amp; expense manager with an offline-capable device app,
+      a credential vault and a personal organizer.</p>
+    </div>
+  </div>
+  <ul class="chips">
+    <li>.NET 10</li>
+    <li>ASP.NET Core</li>
+    <li>Blazor Interactive Server</li>
+    <li>.NET MAUI Blazor Hybrid</li>
+    <li>EF Core 10</li>
+    <li>SQL Server</li>
+    <li>SQLCipher</li>
+    <li>xUnit</li>
+  </ul>
+</header>
+
+<p class="lede">Built as <strong>one .NET solution</strong> where the web app, the device app and the
+API share the same domain, the same Razor UI and the same database schema. A screen is written once
+and appears in both hosts. The device app keeps a complete encrypted local replica, so it works with
+no network at all and reconciles with the server when one is available.</p>
+
+<p>This page is a public overview of the project. <strong>The source repository is private</strong>
+&mdash; see <a href="#source">Source and licence</a> below.</p>
+
+<h2>Three hosts, one codebase</h2>
+
+<table>
+  <thead>
+    <tr><th>Host</th><th>What it is</th><th>Runs on</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>PersonalManager.Web</code></td>
+      <td>Blazor <strong>Interactive Server</strong> site, installable as a PWA</td>
+      <td>Any browser</td>
+    </tr>
+    <tr>
+      <td><code>PersonalManager.MauiHybrid</code></td>
+      <td>.NET MAUI <strong>Blazor Hybrid</strong> app with its own encrypted local database</td>
+      <td>Android, Windows</td>
+    </tr>
+    <tr>
+      <td><code>PersonalManager.Api</code></td>
+      <td>JWT-authenticated HTTP API and background backup host</td>
+      <td>IIS / Kestrel / shared hosting</td>
+    </tr>
+  </tbody>
+</table>
+
+<figure>
+  <img src="assets/architecture-overview.svg" alt="Architecture overview: shared domain, application and UI layers feeding a Blazor Server host, a MAUI Blazor Hybrid host and an ASP.NET Core API over SQL Server.">
+  <figcaption>How the hosts, the shared layers and the two databases fit together.</figcaption>
+</figure>
+
+<h2>What it does</h2>
+
+<h3>Finance</h3>
+<ul>
+  <li><strong>Transactions</strong> &mdash; income and expense ledger with filtering, tagging,
+  server-side paging and bulk operations.</li>
+  <li><strong>Accounts and transfers</strong> &mdash; multiple accounts with running balances;
+  account-to-account movement is kept separate from income and expense so it never distorts totals.</li>
+  <li><strong>Categories, tags and budgets</strong> &mdash; hierarchical categorisation with
+  per-category reporting, budget progress and overspend signalling.</li>
+  <li><strong>Recurring rules</strong> &mdash; templates that generate scheduled transactions.</li>
+  <li><strong>Dashboard</strong> &mdash; balances, period comparisons, category movers and insight strips.</li>
+  <li><strong>Import</strong> &mdash; <code>.xlsx</code> import with a per-row issue collector that
+  reports exactly what failed and why, instead of aborting the whole file.</li>
+  <li><strong>Export</strong> &mdash; filtered transaction lists to Excel, and to a PDF statement
+  with letterhead.</li>
+</ul>
+
+<h3>Organizer workspace</h3>
+<p>A diary, notes and task manager living beside the finance screens, sharing the same account.
+Every tab is its own bookmarkable URL.</p>
+<table>
+  <thead>
+    <tr><th>Section</th><th>Contains</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Today</td><td>Overdue work, tasks due today, today's notes and diary</td></tr>
+    <tr><td>Notes</td><td>Active / Pinned / Archive / Recycle bin</td></tr>
+    <tr><td>Diary</td><td>Active / Drafts / Favorites / Archive / Recycle bin</td></tr>
+    <tr><td>Tasks</td><td>Upcoming, Overdue, Recurring, Completed, Archived, All &mdash; list or calendar view</td></tr>
+  </tbody>
+</table>
+
+<h3>Credential vault</h3>
+<p>Cards, bank logins, website logins and secure notes, encrypted with a <strong>passphrase separate
+from the account password</strong> &mdash; the app cannot read any of it until that passphrase is
+entered. Supports custom fields, per-field secret masking, security question/answer pairs and
+recovery codes, and works offline on the device app.</p>
+
+<h3>Backup and restore</h3>
+<ul>
+  <li>Full application backups written as <strong>AES-256-GCM encrypted archives</strong>.</li>
+  <li><strong>Scheduled backups</strong> run by a hosted service inside the API.</li>
+  <li>Optional <strong>Google Drive</strong> upload over OAuth; the refresh token is encrypted at
+  rest with ASP.NET Core Data Protection.</li>
+  <li>Restore with a pre-flight validation pass that reports warnings before anything is written.</li>
+</ul>
+
+<h2>Engineering notes</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3>Write once, render twice</h3>
+    <p>The browser host and the native WebView host render the same Razor components from a shared
+    UI project, against the same contracts.</p>
+  </div>
+  <div class="card">
+    <h3>Offline is the default</h3>
+    <p>The device app owns a complete local database and treats the server as a peer it reconciles
+    with &mdash; not an online client with a cache.</p>
+  </div>
+  <div class="card">
+    <h3>Strictly inward dependencies</h3>
+    <p>Domain depends on nothing; Application on Domain; Infrastructure and API on Application; the
+    hosts on the shared UI.</p>
+  </div>
+  <div class="card">
+    <h3>Schema changes are a procedure</h3>
+    <p>Migration, then regenerated SQL deployment scripts behind a drift check, then review and
+    targeted migration tests. Nothing is ever auto-applied to a hosted database.</p>
+  </div>
+</div>
+
+<figure>
+  <img src="assets/layers-and-dependencies.svg" alt="Layer diagram showing dependencies pointing inward from hosts through UI and Application to Domain.">
+  <figcaption>Layers and dependency direction.</figcaption>
+</figure>
+
+<figure>
+  <img src="assets/one-read-two-hosts.svg" alt="Diagram of a single read path serving both the Blazor Server host and the MAUI Blazor Hybrid host.">
+  <figcaption>One read path, two hosts &mdash; the same component served from a browser circuit and from a native WebView.</figcaption>
+</figure>
+
+<h3>Offline replica and sync</h3>
+<ul>
+  <li>Every write lands in the <strong>local SQLCipher database</strong> first, so the app is fully
+  usable with no network.</li>
+  <li>Unsent changes queue in an <strong>encrypted outbox</strong> (AES-256-GCM) beside it.</li>
+  <li>Sync runs automatically through a periodic Android <code>WorkManager</code> job &mdash; chosen
+  over a timer or an alarm because it is the only scheduler Android keeps across reboots &mdash; and
+  on demand from the UI, subject to a configurable network policy.</li>
+  <li>The server exposes a change feed, so a device can ask <em>"what changed since my last visit"</em>,
+  <strong>including deletions</strong>, rather than re-downloading everything.</li>
+  <li>Operation IDs make replays idempotent, so a retried batch cannot double-post.</li>
+</ul>
+
+<figure>
+  <img src="assets/sync-engine.svg" alt="Sync engine diagram: local writes, encrypted outbox, change feed pull and idempotent replay.">
+  <figcaption>The sync engine: local write, encrypted outbox, change-feed pull, idempotent replay.</figcaption>
+</figure>
+
+<h2>Security</h2>
+
+<p>Five separate encryption layers, frequently confused for one:</p>
+
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Protects</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>In transit</td><td>API &harr; SQL Server</td></tr>
+    <tr><td>At rest &mdash; database</td><td>Data and log files, and server backups, via Transparent Data Encryption where the host allows it</td></tr>
+    <tr><td>At rest &mdash; app backups</td><td>Archives written by the backup feature, including Drive uploads. AES-256-GCM, always on</td></tr>
+    <tr><td>At rest &mdash; device replica</td><td>The offline copy on the phone or PC and the unsent queue. SQLCipher + AES-256-GCM, per-install key in the platform keystore</td></tr>
+    <tr><td>At rest &mdash; vault</td><td>Vault records, under a passphrase separate from the account password</td></tr>
+  </tbody>
+</table>
+
+<p>Alongside those:</p>
+<ul>
+  <li>JWT access tokens (15 minutes) plus rotating refresh tokens (90 days), stored hashed with a
+  binary collation so lookups are case-exact.</li>
+  <li><strong>App lock</strong> &mdash; PIN with throttling and lockout, plus biometric unlock on Android.</li>
+  <li><strong>Security activity trail</strong> &mdash; sign-ins, refusals, PIN failures and vault
+  exports, queryable per account, with configurable server-side retention.</li>
+  <li>Per-endpoint rate limiting, with a tighter allowance for anonymous auth endpoints.</li>
+  <li>A Content-Security-Policy built per request, and host-header validation that <strong>refuses to
+  start</strong> outside Development when left open.</li>
+</ul>
+
+<blockquote class="note">
+  Every configuration file in the repository carries placeholders only. Signing keys, mail passwords
+  and OAuth secrets are supplied through user-secrets locally or environment variables in production,
+  and are never committed.
+</blockquote>
+
+<h2>Tech stack</h2>
+
+<table>
+  <thead>
+    <tr><th>Area</th><th>Choice</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Runtime</td><td>.NET 10</td></tr>
+    <tr><td>API</td><td>ASP.NET Core, controllers, OpenAPI</td></tr>
+    <tr><td>Web UI</td><td>Blazor Interactive Server + PWA</td></tr>
+    <tr><td>Device UI</td><td>.NET MAUI Blazor Hybrid &mdash; <code>net10.0-android</code> (API 23+) and <code>net10.0-windows10.0.19041.0</code></td></tr>
+    <tr><td>Data</td><td>EF Core 10 &mdash; SQL Server in production, SQLite as a zero-setup dev fallback</td></tr>
+    <tr><td>Device data</td><td>SQLCipher (AES-256) local replica, key held in the platform keystore</td></tr>
+    <tr><td>Spreadsheets</td><td>ClosedXML</td></tr>
+    <tr><td>PDF</td><td>PDFsharp-MigraDoc</td></tr>
+    <tr><td>Auth</td><td>JWT bearer + rotating refresh tokens; cookie auth on the Web host</td></tr>
+    <tr><td>Tests</td><td>xUnit, <code>Microsoft.AspNetCore.Mvc.Testing</code>, coverlet</td></tr>
+    <tr><td>Packages</td><td>Central Package Management with transitive pinning</td></tr>
+  </tbody>
+</table>
+
+<p>iOS and Mac Catalyst targets are deliberately off: the Apple toolchain only builds on macOS, so
+adding the framework without a Mac breaks the build rather than getting closer to shipping.</p>
+
+<h2>Testing and delivery</h2>
+
+<ul>
+  <li><strong>162 test files across 25 areas</strong> &mdash; accounts, auth, backup, budgets,
+  dashboard, export, import, organizer, persistence, recurring, security, sync, transactions,
+  transfers, vault and more.</li>
+  <li>Coverage includes component rendering, real SQLite persistence, full API integration through
+  <code>WebApplicationFactory</code>, migration application and backup round-trips.</li>
+  <li><strong>19 EF Core migrations</strong>, with SQL deployment scripts regenerated behind a
+  model/migration drift check.</li>
+  <li>Publish, verify and maintenance scripts: server publish with the database scripts that release
+  needs, signed APK build, a post-deploy probe that signs in and checks authenticated routes
+  (an anonymous probe cannot tell the difference, because every path answers 401), and a script that
+  asks Android what sync work is registered and then forces it to run.</li>
+</ul>
+
+<h2 id="source">Source and licence</h2>
+
+<p>The implementation lives in a <strong>private repository</strong>. This page exists to describe
+the work and the decisions behind it; it does not distribute the code.</p>
+
+<p>No licence is granted for anything described here. The diagrams on this page are from the
+project's own design documentation.</p>
+
+<footer>
+  <p>Personal Manager &mdash; a personal project by
+  <a href="https://github.com/dp2kv">dp2kv</a>. Source is private.</p>
+</footer>
+
+</main>
+</body>
+</html>

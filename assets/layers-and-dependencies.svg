@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000" viewBox="0 0 1500 1000" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif">
+
+  <defs>
+    <marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/>
+    </marker>
+    <marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+    <marker id="a-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .h1   { font-size: 27px; font-weight: 700; fill: #0f172a; }
+      .sub  { font-size: 15px; fill: #64748b; }
+      .band { font-size: 12px; font-weight: 700; fill: #94a3b8; letter-spacing: 1.6px; }
+      .name { font-size: 17px; font-weight: 700; fill: #0f172a; }
+      .desc { font-size: 13px; fill: #475569; }
+      .tiny { font-size: 12px; fill: #64748b; }
+      .flow { font-size: 12.5px; font-weight: 600; fill: #334155; }
+      .mono { font-size: 12.5px; fill: #334155; font-family: Consolas, "Cascadia Mono", monospace; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="1000" fill="#ffffff"/>
+
+  <text class="h1" x="750" y="46" text-anchor="middle">Projects and dependency direction</text>
+  <text class="sub" x="750" y="74" text-anchor="middle">Each project may only reference the ones below it. The UI can see nothing but Contracts.</text>
+  <text class="band" x="70" y="118" text-anchor="start">HOSTS  ·  the only projects with an entry point</text>
+  <line x1="70" y1="128" x2="1430" y2="128" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="70" y="152" width="380" height="110" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text class="name" x="260" y="182" text-anchor="middle">Web</text>
+  <text class="desc" x="260" y="206" text-anchor="middle">Blazor Interactive Server</text>
+  <text class="tiny" x="260" y="226" text-anchor="middle">cookie auth · no local database</text>
+  <rect x="490" y="152" width="440" height="110" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+  <text class="name" x="710" y="182" text-anchor="middle">MauiHybrid</text>
+  <text class="desc" x="710" y="206" text-anchor="middle">BlazorWebView · Android, Windows</text>
+  <text class="tiny" x="710" y="226" text-anchor="middle">the only host with a local database</text>
+  <rect x="990" y="152" width="440" height="110" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="name" x="1210" y="182" text-anchor="middle">Api</text>
+  <text class="desc" x="1210" y="206" text-anchor="middle">ASP.NET Core Web API</text>
+  <text class="tiny" x="1210" y="226" text-anchor="middle">the only writer to SQL Server</text>
+  <text class="band" x="70" y="306" text-anchor="start">SHARED PRESENTATION  ·  identical page code in both apps</text>
+  <line x1="70" y1="316" x2="1430" y2="316" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="180" y="340" width="640" height="96" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text class="name" x="500" y="370" text-anchor="middle">UI</text>
+  <text class="desc" x="500" y="394" text-anchor="middle">Razor pages, components, PersonalManagerApiClient</text>
+  <text class="tiny" x="500" y="414" text-anchor="middle">references Contracts and nothing else</text>
+  <text class="band" x="70" y="480" text-anchor="start">CORE</text>
+  <line x1="70" y1="490" x2="1430" y2="490" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="490" y="514" width="440" height="110" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text class="name" x="710" y="544" text-anchor="middle">Infrastructure</text>
+  <text class="desc" x="710" y="568" text-anchor="middle">EF Core · persistence · sync transport</text>
+  <text class="tiny" x="710" y="588" text-anchor="middle">implements what Application declares</text>
+  <rect x="990" y="514" width="440" height="110" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text class="name" x="1210" y="544" text-anchor="middle">Application</text>
+  <text class="desc" x="1210" y="568" text-anchor="middle">use cases · services · sync orchestration</text>
+  <text class="tiny" x="1210" y="588" text-anchor="middle">no EF Core, no HTTP, no database</text>
+  <rect x="990" y="684" width="440" height="96" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text class="name" x="1210" y="714" text-anchor="middle">Domain</text>
+  <text class="desc" x="1210" y="738" text-anchor="middle">entities · invariants</text>
+  <text class="tiny" x="1210" y="758" text-anchor="middle">depends on nothing at all</text>
+  <text class="band" x="70" y="820" text-anchor="start">THE SHARED VOCABULARY</text>
+  <line x1="70" y1="830" x2="1430" y2="830" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="70" y="854" width="1360" height="92" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text class="name" x="750" y="884" text-anchor="middle">Contracts</text>
+  <text class="desc" x="750" y="908" text-anchor="middle">DTOs and interfaces · zero project references</text>
+  <text class="tiny" x="750" y="928" text-anchor="middle">the only thing the UI and the server both know about</text>
+  <path d="M 260 262 L 260 340" fill="none" stroke="#2563eb" stroke-width="2.2" marker-end="url(#a-blue)"/>
+  <path d="M 710 262 L 710 340" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
+  <path d="M 880 262 L 880 514" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
+  <text class="flow" x="892" y="390" text-anchor="start">the whole</text>
+  <text class="flow" x="892" y="408" text-anchor="start">offline story</text>
+  <text class="tiny" x="892" y="426" text-anchor="start">a local SQLite</text>
+  <text class="tiny" x="892" y="444" text-anchor="start">copy + sync</text>
+  <path d="M 1210 262 L 1210 514" fill="none" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#a-purple)"/>
+  <path d="M 1030 262 L 1030 300 L 955 300 L 955 560 L 930 560" fill="none" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#a-purple)"/>
+  <path d="M 300 436 L 300 854" fill="none" stroke="#2563eb" stroke-width="2.2" marker-end="url(#a-blue)"/>
+  <text class="flow" x="312" y="630" text-anchor="start">DTOs only</text>
+  <text class="tiny" x="312" y="648" text-anchor="start">the UI cannot reach</text>
+  <text class="tiny" x="312" y="666" text-anchor="start">a database even</text>
+  <text class="tiny" x="312" y="684" text-anchor="start">by accident</text>
+  <path d="M 930 569 L 990 569" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)"/>
+  <path d="M 1210 624 L 1210 684" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)"/>
+  <path d="M 1010 624 L 960 624 L 960 854" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)"/>
+  <rect x="70" y="684" width="380" height="96" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="name" x="90" y="712" text-anchor="start" font-size="15">The one asymmetry</text>
+  <text class="tiny" x="90" y="735" text-anchor="start">Web does not reference Infrastructure.</text>
+  <text class="tiny" x="90" y="753" text-anchor="start">MauiHybrid does. That single line is why</text>
+  <text class="tiny" x="90" y="771" text-anchor="start">one works offline and the other cannot.</text>
+</svg>

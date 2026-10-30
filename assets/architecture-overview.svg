@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1400" viewBox="0 0 1500 1400" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif">
+
+  <defs>
+    <marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/>
+    </marker>
+    <marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+    <marker id="a-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+
+    <style>
+      .h1   { font-size: 27px; font-weight: 700; fill: #0f172a; }
+      .sub  { font-size: 15px; fill: #64748b; }
+      .band { font-size: 12px; font-weight: 700; fill: #94a3b8; letter-spacing: 1.6px; }
+      .name { font-size: 17px; font-weight: 700; fill: #0f172a; }
+      .desc { font-size: 13px; fill: #475569; }
+      .tiny { font-size: 12px; fill: #64748b; }
+      .flow { font-size: 12.5px; font-weight: 600; fill: #334155; }
+      .mono { font-size: 12.5px; fill: #334155; font-family: Consolas, "Cascadia Mono", monospace; }
+      .cname{ font-size: 15px; font-weight: 700; fill: #0f172a; }
+      .cdesc{ font-size: 12px; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="1400" fill="#ffffff"/>
+
+  <text class="h1"  x="750" y="46" text-anchor="middle">Personal Manager — architecture and data flow</text>
+  <text class="sub" x="750" y="74" text-anchor="middle">One SQL Server database. The web app reads it live; the device apps keep a full local copy and sync with it.</text>
+
+  <!-- ══════════════════════════ SECTION A — RUNTIME ══════════════════════════ -->
+  <text class="band" x="70" y="118">RUNTIME AND DATA FLOW</text>
+  <line x1="70" y1="128" x2="1430" y2="128" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ── clients ── -->
+  <rect x="70" y="152" width="360" height="92" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text class="name" x="250" y="186" text-anchor="middle">Web browser</text>
+  <text class="desc" x="250" y="209" text-anchor="middle">Any device · online only</text>
+  <text class="tiny" x="250" y="229" text-anchor="middle">service worker caches static assets only</text>
+
+  <rect x="740" y="152" width="690" height="92" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text class="name" x="1085" y="181" text-anchor="middle">Device apps — .NET MAUI Blazor Hybrid</text>
+  <rect x="775" y="194" width="300" height="34" rx="7" fill="#ffffff" stroke="#2563eb" stroke-width="1.3"/>
+  <text class="desc" x="925" y="216" text-anchor="middle">Android  ·  API 23+  ·  32 MB APK</text>
+  <rect x="1095" y="194" width="300" height="34" rx="7" fill="#ffffff" stroke="#2563eb" stroke-width="1.3"/>
+  <text class="desc" x="1245" y="216" text-anchor="middle">Windows 10 / 11</text>
+
+  <!-- ── host row ── -->
+  <rect x="70" y="316" width="360" height="124" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="name" x="250" y="347" text-anchor="middle">PersonalManager.Web</text>
+  <text class="desc" x="250" y="370" text-anchor="middle">Blazor Server · back-end-for-front-end</text>
+  <text class="tiny" x="250" y="391" text-anchor="middle">encrypted auth cookie carries the tokens</text>
+  <text class="tiny" x="250" y="411" text-anchor="middle">no local database — always reads the server</text>
+  <text class="mono" x="250" y="431" text-anchor="middle">served at  /</text>
+
+  <rect x="740" y="316" width="690" height="124" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+  <text class="name" x="1085" y="347" text-anchor="middle">Local SQLite — one file per signed-in user</text>
+  <text class="desc" x="1085" y="371" text-anchor="middle">a full copy of that user's data · every read and write hits this first, online or not</text>
+  <text class="tiny" x="1085" y="394" text-anchor="middle">Outbox queue — edits made offline wait here until they can be pushed</text>
+  <text class="tiny" x="1085" y="414" text-anchor="middle">tokens in platform secure storage · the whole local copy is deleted on sign-out</text>
+  <text class="mono" x="1085" y="433" text-anchor="middle">this is what makes the app work with no signal</text>
+
+  <path d="M 250 244 L 250 316" stroke="#2563eb" stroke-width="2.2" marker-end="url(#a-blue)" marker-start="url(#a-blue)"/>
+  <text class="flow" x="262" y="276">HTTPS</text>
+  <text class="tiny" x="262" y="294">live circuit</text>
+
+  <path d="M 1085 244 L 1085 316" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)" marker-start="url(#a-orange)"/>
+  <text class="flow" x="1097" y="276">every read / write</text>
+  <text class="tiny" x="1097" y="294">instant, no network</text>
+
+  <!-- ── API ── -->
+  <rect x="330" y="524" width="840" height="126" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="name" x="750" y="556" text-anchor="middle">PersonalManager.Api — REST over HTTPS, JWT bearer</text>
+  <text class="mono" x="750" y="580" text-anchor="middle">hosted as a child app at  /api   →  real routes look like  /api/api/transactions</text>
+  <text class="desc" x="750" y="606" text-anchor="middle">auth · transactions · accounts · categories · budgets · recurring · dashboard</text>
+  <text class="desc" x="750" y="626" text-anchor="middle">import · backups · organizer (diary, notes, todos) · profile · users · sync</text>
+
+  <path d="M 250 440 L 250 496 L 520 496 L 520 524" fill="none" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#a-purple)" marker-start="url(#a-purple)"/>
+  <text class="flow" x="264" y="466">HttpClient + bearer</text>
+  <text class="tiny" x="264" y="484">the browser never sees a token</text>
+
+  <path d="M 1085 440 L 1085 496 L 980 496 L 980 524" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)" marker-start="url(#a-orange)"/>
+  <text class="flow" x="1071" y="466" text-anchor="end">sync only</text>
+  <text class="tiny" x="1071" y="484" text-anchor="end">every 15 min, on launch, when closed, or on demand</text>
+
+  <!-- ── SQL ── -->
+  <rect x="470" y="730" width="560" height="112" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text class="name" x="750" y="762" text-anchor="middle">SQL Server   ·   somee.com</text>
+  <text class="desc" x="750" y="786" text-anchor="middle">the single source of truth — the same database for web and mobile</text>
+  <text class="tiny" x="750" y="808" text-anchor="middle">22 tables · every user's rows are scoped by UserProfileId</text>
+  <text class="tiny" x="750" y="828" text-anchor="middle">devices never connect to it directly — only ever through the API</text>
+
+  <path d="M 750 650 L 750 730" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)" marker-start="url(#a-green)"/>
+  <text class="flow" x="762" y="683">EF Core</text>
+  <text class="tiny" x="762" y="701">AppDbContext</text>
+
+  <!-- ── sync protocol note ── -->
+  <rect x="70" y="700" width="350" height="186" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="name" x="90" y="728" font-size="15">Sync protocol (v1)</text>
+  <text class="mono" x="90" y="752">GET  /api/sync/changes?cursor=N</text>
+  <text class="tiny" x="90" y="770">pull what changed since N · ≤ 500 per page</text>
+  <text class="mono" x="90" y="794">POST /api/sync/changes</text>
+  <text class="tiny" x="90" y="812">push the outbox · ≤ 200 operations per batch</text>
+  <text class="tiny" x="90" y="836">Push first, then pull — so the server merges</text>
+  <text class="tiny" x="90" y="854">your edits before you download the result.</text>
+
+  <!-- ── change log note ── -->
+  <rect x="1080" y="700" width="350" height="202" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="name" x="1100" y="728" font-size="15">How the server tracks changes</text>
+  <text class="tiny" x="1100" y="752">An EF Core interceptor writes a row into</text>
+  <text class="mono" x="1100" y="770">SyncChanges</text>
+  <text class="tiny" x="1100" y="790">for every insert, update and delete, stamped</text>
+  <text class="tiny" x="1100" y="808">with an always-increasing Seq. A device just</text>
+  <text class="tiny" x="1100" y="826">remembers the last Seq it saw.</text>
+  <text class="tiny" x="1100" y="852">Never logged, so they stay on the server:</text>
+  <text class="tiny" x="1100" y="870">backups, import jobs, refresh tokens,</text>
+  <text class="tiny" x="1100" y="888">cloud credentials.</text>
+
+  <!-- ══════════════════════════ SECTION B — STRUCTURE ══════════════════════════ -->
+  <text class="band" x="70" y="932">PROJECT STRUCTURE   ·   9 projects + tests   ·   each layer depends only on the layers below it</text>
+  <line x1="70" y1="942" x2="1430" y2="942" stroke="#e2e8f0" stroke-width="1"/>
+
+  <path d="M 150 990 L 150 1290" stroke="#64748b" stroke-width="1.8" marker-end="url(#a-slate)" stroke-dasharray="4 4"/>
+  <text class="tiny" x="143" y="1150" text-anchor="middle" transform="rotate(-90 143 1150)">depends on</text>
+
+  <!-- band 1 : hosts -->
+  <rect x="260" y="962" width="1120" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="tiny" x="240" y="1003" text-anchor="end" font-weight="700">Hosts</text>
+  <rect x="275" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text class="cname" x="400" y="995" text-anchor="middle">Api</text>
+  <text class="cdesc" x="400" y="1013" text-anchor="middle">REST + JWT  ·  /api</text>
+  <rect x="555" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text class="cname" x="680" y="995" text-anchor="middle">Web</text>
+  <text class="cdesc" x="680" y="1013" text-anchor="middle">Blazor Server BFF  ·  /</text>
+  <rect x="835" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text class="cname" x="960" y="995" text-anchor="middle">MauiHybrid</text>
+  <text class="cdesc" x="960" y="1013" text-anchor="middle">Android + Windows</text>
+  <rect x="1115" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text class="cname" x="1240" y="995" text-anchor="middle">Tests</text>
+  <text class="cdesc" x="1240" y="1013" text-anchor="middle">321 passing</text>
+
+  <!-- band 2 : UI -->
+  <rect x="260" y="1046" width="1120" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="tiny" x="240" y="1087" text-anchor="end" font-weight="700">Shared UI</text>
+  <rect x="275" y="1058" width="1090" height="48" rx="7" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text class="cname" x="820" y="1079" text-anchor="middle">UI</text>
+  <text class="cdesc" x="820" y="1097" text-anchor="middle">Razor pages and components shared by Web and the device apps — one screen design, three platforms  (the Api skips this layer)</text>
+
+  <!-- band 3 : infrastructure -->
+  <rect x="260" y="1130" width="1120" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="tiny" x="240" y="1171" text-anchor="end" font-weight="700">Infrastructure</text>
+  <rect x="280" y="1142" width="340" height="48" rx="7" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text class="cname" x="450" y="1163" text-anchor="middle">AppDbContext</text>
+  <text class="cdesc" x="450" y="1181" text-anchor="middle">the EF Core model · 22 tables</text>
+  <rect x="650" y="1142" width="340" height="48" rx="7" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text class="cname" x="820" y="1163" text-anchor="middle">SyncChangeLogInterceptor</text>
+  <text class="cdesc" x="820" y="1181" text-anchor="middle">stamps every change with a Seq</text>
+  <rect x="1020" y="1142" width="340" height="48" rx="7" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text class="cname" x="1190" y="1163" text-anchor="middle">Providers</text>
+  <text class="cdesc" x="1190" y="1181" text-anchor="middle">SQL Server on the server · SQLite on the device</text>
+
+  <!-- band 4 : application -->
+  <rect x="260" y="1214" width="1120" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="tiny" x="240" y="1255" text-anchor="end" font-weight="700">Application</text>
+  <rect x="280" y="1226" width="340" height="48" rx="7" fill="#ffffff" stroke="#ea580c" stroke-width="1.5"/>
+  <text class="cname" x="450" y="1247" text-anchor="middle">Auth</text>
+  <text class="cdesc" x="450" y="1265" text-anchor="middle">issues JWTs · sliding 14-day session</text>
+  <rect x="650" y="1226" width="340" height="48" rx="7" fill="#ffffff" stroke="#ea580c" stroke-width="1.5"/>
+  <text class="cname" x="820" y="1247" text-anchor="middle">Sync</text>
+  <text class="cdesc" x="820" y="1265" text-anchor="middle">SyncService pulls · SyncPushService merges</text>
+  <rect x="1020" y="1226" width="340" height="48" rx="7" fill="#ffffff" stroke="#ea580c" stroke-width="1.5"/>
+  <text class="cname" x="1190" y="1247" text-anchor="middle">Offline</text>
+  <text class="cdesc" x="1190" y="1265" text-anchor="middle">local write store + outbox queue</text>
+
+  <!-- band 5 : contracts + domain -->
+  <rect x="260" y="1298" width="1120" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="tiny" x="240" y="1339" text-anchor="end" font-weight="700">Core</text>
+  <rect x="280" y="1310" width="530" height="48" rx="7" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+  <text class="cname" x="545" y="1331" text-anchor="middle">Contracts</text>
+  <text class="cdesc" x="545" y="1349" text-anchor="middle">DTOs and the sync wire protocol — shared by server and device</text>
+  <rect x="840" y="1310" width="520" height="48" rx="7" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+  <text class="cname" x="1100" y="1331" text-anchor="middle">Domain</text>
+  <text class="cdesc" x="1100" y="1349" text-anchor="middle">the entities — the shape of the data itself</text>
+
+</svg>

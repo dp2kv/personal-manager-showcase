@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1020" viewBox="0 0 1500 1020" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif">
+
+  <defs>
+    <marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/>
+    </marker>
+    <marker id="a-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+    <marker id="a-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .h1   { font-size: 27px; font-weight: 700; fill: #0f172a; }
+      .sub  { font-size: 15px; fill: #64748b; }
+      .band { font-size: 12px; font-weight: 700; fill: #94a3b8; letter-spacing: 1.6px; }
+      .name { font-size: 17px; font-weight: 700; fill: #0f172a; }
+      .desc { font-size: 13px; fill: #475569; }
+      .tiny { font-size: 12px; fill: #64748b; }
+      .flow { font-size: 12.5px; font-weight: 600; fill: #334155; }
+      .mono { font-size: 12.5px; fill: #334155; font-family: Consolas, "Cascadia Mono", monospace; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="1020" fill="#ffffff"/>
+
+  <text class="h1" x="750" y="46" text-anchor="middle">One read, two hosts</text>
+  <text class="sub" x="750" y="74" text-anchor="middle">The same page calls the same method. Dependency injection decides what actually happens.</text>
+  <rect x="430" y="108" width="640" height="84" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text class="name" x="750" y="138" text-anchor="middle" font-size="16">Transactions.razor  —  one shared file</text>
+  <text class="mono" x="750" y="162" text-anchor="middle">await Api.GetTransactionsAsync()</text>
+  <path d="M 560 192 L 560 232 L 300 232 L 300 272" fill="none" stroke="#2563eb" stroke-width="2.2" marker-end="url(#a-blue)"/>
+  <path d="M 940 192 L 940 232 L 1200 232 L 1200 272" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
+  <rect x="70" y="272" width="620" height="660" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text class="band" x="380" y="302" text-anchor="middle">WEB HOST</text>
+  <rect x="110" y="324" width="540" height="92" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text class="name" x="380" y="354" text-anchor="middle">ReadAsync</text>
+  <text class="desc" x="380" y="378" text-anchor="middle">offlineStore.IsAvailable is false</text>
+  <text class="tiny" x="380" y="398" text-anchor="middle">no Infrastructure reference, so no local copy exists</text>
+  <path d="M 380 416 L 380 468" fill="none" stroke="#2563eb" stroke-width="2.2" marker-end="url(#a-blue)"/>
+  <rect x="110" y="468" width="540" height="88" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text class="name" x="380" y="498" text-anchor="middle">HttpClient + delegating handlers</text>
+  <text class="desc" x="380" y="522" text-anchor="middle">bearer token pulled from the encrypted cookie</text>
+  <text class="tiny" x="380" y="542" text-anchor="middle">the browser never holds a readable token</text>
+  <path d="M 380 556 L 380 608" fill="none" stroke="#2563eb" stroke-width="2.2" marker-end="url(#a-blue)"/>
+  <rect x="110" y="608" width="540" height="80" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text class="name" x="380" y="638" text-anchor="middle">Api</text>
+  <text class="desc" x="380" y="662" text-anchor="middle">Application service → EF Core</text>
+  <path d="M 380 688 L 380 740" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)"/>
+  <rect x="110" y="740" width="540" height="80" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text class="name" x="380" y="770" text-anchor="middle">SQL Server</text>
+  <text class="desc" x="380" y="794" text-anchor="middle">the single source of truth</text>
+  <rect x="110" y="846" width="540" height="62" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="flow" x="380" y="872" text-anchor="middle">Always a network round trip.</text>
+  <text class="tiny" x="380" y="892" text-anchor="middle">No signal means no page. That is the correct trade for a browser.</text>
+  <rect x="810" y="272" width="620" height="660" rx="12" fill="#fffbf5" stroke="#fdba74" stroke-width="1.5"/>
+  <text class="band" x="1120" y="302" text-anchor="middle">DEVICE APP</text>
+  <rect x="850" y="324" width="540" height="92" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+  <text class="name" x="1120" y="354" text-anchor="middle">ReadAsync</text>
+  <text class="desc" x="1120" y="378" text-anchor="middle">IsAvailable AND CanServeReads are both true</text>
+  <text class="tiny" x="1120" y="398" text-anchor="middle">HasLocalCopy &amp;&amp; syncedGeneration == writeGeneration</text>
+  <path d="M 1120 416 L 1120 468" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
+  <rect x="850" y="468" width="540" height="88" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+  <text class="name" x="1120" y="498" text-anchor="middle">OfflineDatabaseGate</text>
+  <text class="desc" x="1120" y="522" text-anchor="middle">serialises every device read and write</text>
+  <text class="tiny" x="1120" y="542" text-anchor="middle">one AppDbContext cannot serve two operations at once</text>
+  <path d="M 1120 556 L 1120 608" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
+  <rect x="850" y="608" width="540" height="80" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+  <text class="name" x="1120" y="638" text-anchor="middle">Local SQLite</text>
+  <text class="desc" x="1120" y="662" text-anchor="middle">a full copy of this user&#x27;s data, on the device</text>
+  <rect x="850" y="740" width="540" height="80" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="flow" x="1120" y="768" text-anchor="middle">The network is never touched.</text>
+  <text class="tiny" x="1120" y="790" text-anchor="middle">Anything that changed elsewhere arrives with the next sync.</text>
+  <rect x="850" y="846" width="540" height="62" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="flow" x="1120" y="872" text-anchor="middle">Instant, and it works on a train.</text>
+  <text class="tiny" x="1120" y="892" text-anchor="middle">Opening the app lands on real data instead of a spinner.</text>
+  <text class="desc" x="750" y="972" text-anchor="middle">Not one line of page code knows which of these two columns it is running in.</text>
+</svg>
