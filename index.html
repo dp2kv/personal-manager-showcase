@@ -348,6 +348,11 @@ recovery codes, and works offline on the device app.</p>
 <ul>
   <li>Short-lived JWT access tokens plus rotating refresh tokens, stored hashed with a binary
   collation so lookups are case-exact.</li>
+  <li><strong>Two-step sign-in</strong> &mdash; TOTP (RFC 6238) against any authenticator app, with
+  emailed six-digit codes as a second option and ten single-use recovery codes. The authenticator
+  secret is encrypted at rest and is deliberately excluded from the sync payload, so it never
+  reaches a device. Email is offered as the backup rather than the plan: the mailbox is also where
+  password resets land, so password plus emailed code is closer to one factor than two.</li>
   <li><strong>App lock</strong> &mdash; PIN with throttling and lockout, plus biometric unlock on Android.</li>
   <li><strong>Security activity trail</strong> &mdash; sign-ins, refusals, PIN failures and vault
   exports, queryable per account, with configurable server-side retention.</li>
@@ -377,7 +382,7 @@ recovery codes, and works offline on the device app.</p>
     <tr><td>Device data</td><td>SQLCipher (AES-256) local replica, key held in the platform keystore</td></tr>
     <tr><td>Spreadsheets</td><td>ClosedXML</td></tr>
     <tr><td>PDF</td><td>PDFsharp-MigraDoc</td></tr>
-    <tr><td>Auth</td><td>JWT bearer + rotating refresh tokens; cookie auth on the Web host</td></tr>
+    <tr><td>Auth</td><td>JWT bearer + rotating refresh tokens; cookie auth on the Web host; TOTP second factor implemented in-project, no third-party dependency</td></tr>
     <tr><td>Tests</td><td>xUnit, <code>Microsoft.AspNetCore.Mvc.Testing</code>, coverlet</td></tr>
     <tr><td>Packages</td><td>Central Package Management with transitive pinning</td></tr>
   </tbody>
@@ -389,12 +394,16 @@ adding the framework without a Mac breaks the build rather than getting closer t
 <h2>Testing and delivery</h2>
 
 <ul>
-  <li><strong>162 test files across 25 areas</strong> &mdash; accounts, auth, backup, budgets,
+  <li><strong>181 test files across 26 areas</strong> &mdash; accounts, auth, backup, budgets,
   dashboard, export, import, organizer, persistence, recurring, security, sync, transactions,
   transfers, vault and more.</li>
   <li>Coverage includes component rendering, real SQLite persistence, full API integration through
   <code>WebApplicationFactory</code>, migration application and backup round-trips.</li>
-  <li><strong>19 EF Core migrations</strong>, with SQL deployment scripts regenerated behind a
+  <li>A static guard reads every component call site in the solution and checks each attribute
+  against the parameters that component actually declares &mdash; a mismatch is not a build error in
+  Razor, it throws the first time that component renders, which for a rarely opened panel can be
+  long after release.</li>
+  <li><strong>20 EF Core migrations</strong>, with SQL deployment scripts regenerated behind a
   model/migration drift check.</li>
   <li>Publish, verify and maintenance scripts: server publish with the database scripts that release
   needs, signed APK build, a post-deploy probe that signs in and checks authenticated routes
