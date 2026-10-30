@@ -346,8 +346,8 @@ recovery codes, and works offline on the device app.</p>
 
 <p>Alongside those:</p>
 <ul>
-  <li>JWT access tokens (15 minutes) plus rotating refresh tokens (90 days), stored hashed with a
-  binary collation so lookups are case-exact.</li>
+  <li>Short-lived JWT access tokens plus rotating refresh tokens, stored hashed with a binary
+  collation so lookups are case-exact.</li>
   <li><strong>App lock</strong> &mdash; PIN with throttling and lockout, plus biometric unlock on Android.</li>
   <li><strong>Security activity trail</strong> &mdash; sign-ins, refusals, PIN failures and vault
   exports, queryable per account, with configurable server-side retention.</li>

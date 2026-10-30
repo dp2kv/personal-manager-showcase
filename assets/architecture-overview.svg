@@ -60,7 +60,7 @@
   <text class="desc" x="250" y="370" text-anchor="middle">Blazor Server · back-end-for-front-end</text>
   <text class="tiny" x="250" y="391" text-anchor="middle">encrypted auth cookie carries the tokens</text>
   <text class="tiny" x="250" y="411" text-anchor="middle">no local database — always reads the server</text>
-  <text class="mono" x="250" y="431" text-anchor="middle">served at  /</text>
+  <text class="mono" x="250" y="431" text-anchor="middle">served at the site root</text>
 
   <rect x="740" y="316" width="690" height="124" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
   <text class="name" x="1085" y="347" text-anchor="middle">Local SQLite — one file per signed-in user</text>
@@ -80,7 +80,7 @@
   <!-- ── API ── -->
   <rect x="330" y="524" width="840" height="126" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
   <text class="name" x="750" y="556" text-anchor="middle">PersonalManager.Api — REST over HTTPS, JWT bearer</text>
-  <text class="mono" x="750" y="580" text-anchor="middle">hosted as a child app at  /api   →  real routes look like  /api/api/transactions</text>
+  <text class="mono" x="750" y="580" text-anchor="middle">mounted under a configurable path base, so the host decides where it lives</text>
   <text class="desc" x="750" y="606" text-anchor="middle">auth · transactions · accounts · categories · budgets · recurring · dashboard</text>
   <text class="desc" x="750" y="626" text-anchor="middle">import · backups · organizer (diary, notes, todos) · profile · users · sync</text>
 
@@ -94,9 +94,9 @@
 
   <!-- ── SQL ── -->
   <rect x="470" y="730" width="560" height="112" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
-  <text class="name" x="750" y="762" text-anchor="middle">SQL Server   ·   somee.com</text>
+  <text class="name" x="750" y="762" text-anchor="middle">SQL Server   ·   hosted</text>
   <text class="desc" x="750" y="786" text-anchor="middle">the single source of truth — the same database for web and mobile</text>
-  <text class="tiny" x="750" y="808" text-anchor="middle">22 tables · every user's rows are scoped by UserProfileId</text>
+  <text class="tiny" x="750" y="808" text-anchor="middle">22 tables · every query is scoped to the signed-in user's own rows</text>
   <text class="tiny" x="750" y="828" text-anchor="middle">devices never connect to it directly — only ever through the API</text>
 
   <path d="M 750 650 L 750 730" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)" marker-start="url(#a-green)"/>
@@ -106,10 +106,10 @@
   <!-- ── sync protocol note ── -->
   <rect x="70" y="700" width="350" height="186" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
   <text class="name" x="90" y="728" font-size="15">Sync protocol (v1)</text>
-  <text class="mono" x="90" y="752">GET  /api/sync/changes?cursor=N</text>
-  <text class="tiny" x="90" y="770">pull what changed since N · ≤ 500 per page</text>
-  <text class="mono" x="90" y="794">POST /api/sync/changes</text>
-  <text class="tiny" x="90" y="812">push the outbox · ≤ 200 operations per batch</text>
+  <text class="mono" x="90" y="752">PULL  changes since cursor N</text>
+  <text class="tiny" x="90" y="770">everything added, edited or deleted since N · paged</text>
+  <text class="mono" x="90" y="794">PUSH  queued operations</text>
+  <text class="tiny" x="90" y="812">drain the outbox in batches · replay-safe</text>
   <text class="tiny" x="90" y="836">Push first, then pull — so the server merges</text>
   <text class="tiny" x="90" y="854">your edits before you download the result.</text>
 
@@ -137,10 +137,10 @@
   <text class="tiny" x="240" y="1003" text-anchor="end" font-weight="700">Hosts</text>
   <rect x="275" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
   <text class="cname" x="400" y="995" text-anchor="middle">Api</text>
-  <text class="cdesc" x="400" y="1013" text-anchor="middle">REST + JWT  ·  /api</text>
+  <text class="cdesc" x="400" y="1013" text-anchor="middle">REST + JWT bearer</text>
   <rect x="555" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
   <text class="cname" x="680" y="995" text-anchor="middle">Web</text>
-  <text class="cdesc" x="680" y="1013" text-anchor="middle">Blazor Server BFF  ·  /</text>
+  <text class="cdesc" x="680" y="1013" text-anchor="middle">Blazor Server BFF</text>
   <rect x="835" y="974" width="250" height="48" rx="7" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
   <text class="cname" x="960" y="995" text-anchor="middle">MauiHybrid</text>
   <text class="cdesc" x="960" y="1013" text-anchor="middle">Android + Windows</text>
@@ -173,7 +173,7 @@
   <text class="tiny" x="240" y="1255" text-anchor="end" font-weight="700">Application</text>
   <rect x="280" y="1226" width="340" height="48" rx="7" fill="#ffffff" stroke="#ea580c" stroke-width="1.5"/>
   <text class="cname" x="450" y="1247" text-anchor="middle">Auth</text>
-  <text class="cdesc" x="450" y="1265" text-anchor="middle">issues JWTs · sliding 14-day session</text>
+  <text class="cdesc" x="450" y="1265" text-anchor="middle">issues JWTs · sliding session with rotating refresh</text>
   <rect x="650" y="1226" width="340" height="48" rx="7" fill="#ffffff" stroke="#ea580c" stroke-width="1.5"/>
   <text class="cname" x="820" y="1247" text-anchor="middle">Sync</text>
   <text class="cdesc" x="820" y="1265" text-anchor="middle">SyncService pulls · SyncPushService merges</text>

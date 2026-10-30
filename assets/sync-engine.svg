@@ -67,7 +67,7 @@
   <text class="tiny" x="400" y="574" text-anchor="middle">the local database is disposable; the queue must not be</text>
   <path d="M 400 584 L 400 624" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
   <rect x="110" y="624" width="580" height="50" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-  <text class="name" x="400" y="654" text-anchor="middle" font-size="15">POST  /api/sync/changes</text>
+  <text class="name" x="400" y="654" text-anchor="middle" font-size="15">PUSH  queued operations</text>
   <path d="M 400 674 L 400 706" fill="none" stroke="#ea580c" stroke-width="2.2" marker-end="url(#a-orange)"/>
   <rect x="110" y="706" width="580" height="42" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
   <text class="tiny" x="400" y="732" text-anchor="middle">accepted operations are removed from the queue; rejects stay for review</text>
@@ -75,7 +75,7 @@
   <rect x="770" y="452" width="660" height="310" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
   <text class="band" x="810" y="482" text-anchor="middle">2 · PULL</text>
   <rect x="810" y="500" width="580" height="50" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-  <text class="name" x="1100" y="530" text-anchor="middle" font-size="15">GET  /api/sync/changes?cursor=N</text>
+  <text class="name" x="1100" y="530" text-anchor="middle" font-size="15">PULL  changes since cursor N</text>
   <path d="M 1100 550 L 1100 586" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#a-green)"/>
   <rect x="810" y="586" width="580" height="84" rx="10" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
   <text class="name" x="1100" y="616" text-anchor="middle">SyncDeltaApplier</text>
@@ -87,7 +87,7 @@
   <path d="M 1000 404 L 1100 404 L 1100 452" fill="none" stroke="#059669" stroke-width="2.6" marker-end="url(#a-green)"/>
   <rect x="430" y="806" width="640" height="100" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
   <text class="name" x="750" y="836" text-anchor="middle">SyncChangeLog  ·  on the server</text>
-  <text class="desc" x="750" y="860" text-anchor="middle">Seq · UserProfileId · EntityType · EntityId · Operation</text>
+  <text class="desc" x="750" y="860" text-anchor="middle">Seq · Owner · EntityType · EntityId · Operation</text>
   <text class="tiny" x="750" y="880" text-anchor="middle">written by a SaveChanges interceptor, so it catches deletes too</text>
   <path d="M 400 748 L 400 782 L 560 782 L 560 806" fill="none" stroke="#7c3aed" stroke-width="1.8" marker-end="url(#a-purple)"/>
   <path d="M 1100 748 L 1100 782 L 940 782 L 940 806" fill="none" stroke="#7c3aed" stroke-width="1.8" marker-end="url(#a-purple)"/>
